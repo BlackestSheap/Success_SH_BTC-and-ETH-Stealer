@@ -1,38 +1,41 @@
 #!/bin/bash
 
-## Konfiguration
-ORDNER1="/home/pipi/Bitcoin-Stealer/Linux"
+## Configuration -- Set the Path to the Directories
+ORDNER1="/PATH/TO/Bitcoin-Stealer/Linux"
 DATEI1="Success.txt"
-ORDNER2="/home/pipi/Ethereum-Stealer/Linux"
+ORDNER2="/PATH/TO/Ethereum-Stealer/Linux"
 DATEI2="Success.txt"
-PROTOKOLLDATEI="/home/pipi/protocol.log"
+PROTOKOLLDATEI="/PATH/TO/protocol.log"
+## Create a protocol.log file in a directory of your choice and set the path to "PROTOKOLLDATEI"
 
-## Funktion zur Prüfung eines Ordners
+## DO NOT TOUCH - This is the Checkup for the protocol 
 pruefeOrdner() {
     local ordner=$1
     local datei=$2
     local zeitstempel=$(date '+%Y-%m-%d %H:%M:%S')
     if [ -f "$ordner/$datei" ]; then
-        nachricht="$zeitstempel - $datei gefunden in $ordner"
+        nachricht="$zeitstempel - $datei found in $ordner"
     else
-        nachricht="$zeitstempel - $datei nicht gefunden in $ordner"
+        nachricht="$zeitstempel - $datei not found in $ordner"
     fi
     echo "$nachricht" | tee -a $PROTOKOLLDATEI
 }
 
-## Funktion zum Löschen der Konsole
+## console clear function - DO NOT TOUCH
 loescheKonsole() {
     clear
 }
 
-## Hauptschleife
+## Main Loop - This gives an output to your console, that you dont have to check the protocol file each time. 
+## This refreshes every 60 seconds and should not set below 60 seconds, because it creates more work load
 while true; do
     loescheKonsole
-    echo "Dateiprüfung läuft..."
+    echo "Checking for files..."
     echo "------------------------"
     pruefeOrdner $ORDNER1 $DATEI1
     pruefeOrdner $ORDNER2 $DATEI2
     echo "------------------------"
-    echo "Nächste Prüfung in 60 Sekunden..."
+    echo "Next refresh in 60 seconds..."
     sleep 60
+    ## Set the sleep timer to a value of your choice, but keep in mind that too many refreshes create more work load
 done
